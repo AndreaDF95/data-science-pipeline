@@ -1,0 +1,22 @@
+[project]
+name = "ds-project"
+version = "0.1.0"
+description = "Data Science project"
+authors = [
+    {name = "Andrea Di Francesco"}
+]
+requires-python = ">=3.14"
+dependencies = [
+    "polars (>=1.39.3,<2.0.0)",
+    "duckdb (>=1.5.0,<2.0.0)",
+    "pyarrow (>=23.0.1,<24.0.0)",
+    "pandas (>=3.0.1,<4.0.0)",
+    "scikit-learn (>=1.8.0,<2.0.0)",
+    "lightgbm (>=4.6.0,<5.0.0)",
+    "shap (>=0.51.0,<0.52.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
