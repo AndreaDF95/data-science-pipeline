@@ -41,3 +41,7 @@ ds-project/
 ## Architecture
 
 Raw Data → Polars → Transformation → Parquet → DuckDB → ML Model
+
+## Purpose
+
+This project aims to simulate a real-world data pipeline integrating data engineering and machine learning workflows.
