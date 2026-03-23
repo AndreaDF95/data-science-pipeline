@@ -1,13 +1,18 @@
 import polars as pl
 import duckdb
 import os
+from src.utils.logger import get_logger
+
+logger = get_logger()
 
 
-def load_data(path: str) -> pl.DataFrame:
+def load_data(path: str):
+    logger.info(f"Loading data from {path}")
     return pl.read_csv(path)
 
 
 def transform_data(df: pl.DataFrame) -> pl.DataFrame:
+    logger.info("Transforming data")
     return (
         df
         .with_columns([
@@ -26,6 +31,7 @@ def transform_data(df: pl.DataFrame) -> pl.DataFrame:
     
 
 def save_data(df, path: str):
+    logger.info(f"Saving data to {path}")
     os.makedirs(os.path.dirname(path), exist_ok=True)
     df.write_parquet(path)
 
