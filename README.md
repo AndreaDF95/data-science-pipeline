@@ -36,3 +36,8 @@ ds-project/
 ├── config/
 ├── logs/
 ├── tests/
+
+
+## Architecture
+
+Raw Data → Polars → Transformation → Parquet → DuckDB → ML Model
