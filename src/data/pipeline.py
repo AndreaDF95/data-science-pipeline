@@ -4,6 +4,7 @@ import os
 from src.utils.logger import get_logger
 from src.utils.validation import validate_dataframe
 from src.utils.retry import retry
+import argparse
 
 logger = get_logger()
 
@@ -44,24 +45,56 @@ def save_data(df, path: str):
     df.write_parquet(path)
 
 
-def run_sql_analysis(parquet_path: str):
+def run_sql_analysis(parquet_path: str, min_total: int):
     query = f"""
         SELECT
             customer_id,
             total_amount,
             avg_amount
         FROM read_parquet('{parquet_path}')
-        WHERE total_amount > 200
+        WHERE total_amount > {min_total}
     """
     return duckdb.sql(query).df()
 
+def main():
+    parser = argparse.ArgumentParser(description="Data pipeline")
+
+    parser.add_argument(
+        "--input",
+        type=str,
+        default="data/raw/sales.csv",
+        help="Input CSV path",
+    )
+
+    parser.add_argument(
+        "--output",
+        type=str,
+        default="data/processed/sales.parquet",
+        help="Output Parquet path",
+    )
+
+    parser.add_argument(
+        "--min-total",
+        type=int,
+        default=200,
+        help="Filter threshold",
+    )
+
+    args = parser.parse_args()
+
+    try:
+        df = load_data(args.input)
+        df_transformed = transform_data(df)
+
+        save_data(df_transformed, args.output)
+
+        result = run_sql_analysis(args.output, args.min_total)
+
+        logger.info(f"Final result:\n{result}")
+
+    except Exception as e:
+        logger.error(f"Pipeline failed: {e}")
+        raise
 
 if __name__ == "__main__":
-    df = load_data("data/raw/sales.csv")
-    df_transformed = transform_data(df)
-
-    save_data(df_transformed, "data/processed/sales.parquet")
-
-    result = run_sql_analysis("data/processed/sales.parquet")
-
-    print(result)
+    main()
