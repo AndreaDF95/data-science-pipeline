@@ -2,13 +2,21 @@ import polars as pl
 import duckdb
 import os
 from src.utils.logger import get_logger
+from src.utils.validation import validate_dataframe
+from src.utils.retry import retry
 
 logger = get_logger()
 
 
+@retry(max_attempts=3, delay=2)
 def load_data(path: str):
     logger.info(f"Loading data from {path}")
-    return pl.read_csv(path)
+    df = pl.read_csv(path)
+
+    logger.info("Validating data")
+    validate_dataframe(df)
+
+    return df
 
 
 def transform_data(df: pl.DataFrame) -> pl.DataFrame:
