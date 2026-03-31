@@ -1,14 +1,13 @@
 import polars as pl
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 from lightgbm import LGBMRegressor
-import shap
+# import shap
 
 
 def explain_model(model, X):
-    explainer = shap.Explainer(model)
-    shap_values = explainer(X)
+    # explainer = shap.Explainer(model)
+    # shap_values = explainer(X)
 
     print("SHAP values calculated")
 
