@@ -29,7 +29,7 @@ jobs:
 
     - name: Run formatter check (Black)
       run: |
-        black --check .
+        black --check . --target-version py311
 
     - name: Run lint (Flake8)
       run: |
