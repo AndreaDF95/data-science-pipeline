@@ -27,6 +27,18 @@ jobs:
         poetry config virtualenvs.create false
         poetry install --no-interaction --no-ansi --no-root
 
+    - name: Run formatter check (Black)
+      run: |
+        black --check .
+
+    - name: Run lint (Flake8)
+      run: |
+        flake8 .
+
+    - name: Run tests
+      run: |
+        pytest
+
     - name: Run pipeline
       run: |
         python -m src.data.pipeline --input data/raw/sales_sample.csv --min-total 100

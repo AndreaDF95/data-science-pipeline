@@ -23,21 +23,20 @@ def load_data(path: str):
 def transform_data(df: pl.DataFrame) -> pl.DataFrame:
     logger.info("Transforming data")
     return (
-        df
-        .with_columns([
-            pl.col("amount").cast(pl.Float64),
-            pl.col("date").str.to_date()
-        ])
+        df.with_columns(
+            [pl.col("amount").cast(pl.Float64), pl.col("date").str.to_date()]
+        )
         .group_by("customer_id")
-        .agg([
-            pl.col("amount").sum().alias("total_amount"),
-            pl.col("amount").mean().alias("avg_amount"),
-            #pl.count().alias("num_transactions") -- deprecated in favor of len()
-            pl.len().alias("num_transactions")
-        ])
+        .agg(
+            [
+                pl.col("amount").sum().alias("total_amount"),
+                pl.col("amount").mean().alias("avg_amount"),
+                # pl.count().alias("num_transactions") -- deprecated in favor of len()
+                pl.len().alias("num_transactions"),
+            ]
+        )
     )
 
-    
 
 def save_data(df, path: str):
     logger.info(f"Saving data to {path}")
@@ -55,6 +54,7 @@ def run_sql_analysis(parquet_path: str, min_total: int):
         WHERE total_amount > {min_total}
     """
     return duckdb.sql(query).df()
+
 
 def main():
     parser = argparse.ArgumentParser(description="Data pipeline")
@@ -95,6 +95,7 @@ def main():
     except Exception as e:
         logger.error(f"Pipeline failed: {e}")
         raise
+
 
 if __name__ == "__main__":
     main()

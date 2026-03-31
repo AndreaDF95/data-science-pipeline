@@ -12,9 +12,7 @@ def get_logger(name: str = "pipeline"):
         file_handler = logging.FileHandler("logs/pipeline.log")
         console_handler = logging.StreamHandler()
 
-        formatter = logging.Formatter(
-            "%(asctime)s - %(levelname)s - %(message)s"
-        )
+        formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
         file_handler.setFormatter(formatter)
         console_handler.setFormatter(formatter)
