@@ -3,11 +3,9 @@ import sys
 import logging
 import argparse
 
-
-
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("runner")
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
